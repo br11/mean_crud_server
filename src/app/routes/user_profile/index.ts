@@ -1,0 +1,1 @@
+export * from './model/user_profile_model';

@@ -1,0 +1,3 @@
+{
+    "dbURI" : "'mongoDb:localhost:27017"
+}
