@@ -61,7 +61,8 @@ export class Database {
      * Create the database connection 
      */
     public connect(): Database {
-        this.mongoose.connect(this.conf.dbURI, { useMongoClient: true });
+         // this.mongoose.connect(this.conf.dbURI, { useMongoClient: true });
+         this.mongoose.connect(this.conf.dbURI, { user: 'mean_crud_server', pass: '123456', useMongoClient: true });
         return this;
     }
 
