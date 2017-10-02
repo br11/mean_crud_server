@@ -16,10 +16,12 @@ export class Main {
 
 
     private static config() {
-        // fs.readFileSync('./conf/app_conf.json');
-         Main.appConf = { port: 3002, dbURI: 'mongodb://localhost:27017' };
+        const port = +process.argv[2]
+        const dbURI = 'mongodb://' + process.argv[3]
+
+        Main.appConf = { port: port, dbURI: dbURI };
         // Main.appConf = { port: 3002, dbURI: 'mongodb://iot_chat:iot_chat@ds151820.mlab.com:51820/iot_chat' };
-       
+
         this.db = new Database(Main.appConf)
             .onConnected(() => {
                 console.log('database connected');
@@ -37,5 +39,10 @@ export class Main {
         Main.server = new Server(Main.appConf);
     }
 }
+
+console.log('>>>');
+console.log(process.argv[2]);
+console.log(process.argv[3]);
+console.log('>>>');
 
 Main.bootstrap();

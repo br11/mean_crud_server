@@ -1,4 +1,5 @@
 import * as express from 'express';
+var swagger = require('swagger-express');
 import { Application, Router, Request, Response } from 'express';
 
 import * as routes from "../routes";
@@ -17,6 +18,17 @@ export class Server {
 
     public init() {
         this.app = express();
+        this.app.use(swagger.init(this.app, {
+            apiVersion: '1.0',
+            swaggerVersion: '1.0',
+            swaggerURL: '/swagger',
+            swaggerJSON: '/api-docs.json',
+            swaggerUI: './public/swagger/',
+            basePath: 'http://localhost:3002',
+            apis: [],
+            middleware: function(req, res){}
+          }));
+
         this.app.listen(this.config.port, () => {
             console.log(`Listening at http://localhost:` + this.config.port);
         });
