@@ -20,6 +20,8 @@ export class Database {
      */
     constructor(private conf: { dbURI: string, name?: string }) {
         this.mongoose = new Mongoose();
+        this.mongoose.Promise = global.Promise;
+
         if (!(conf.name)) {
             if (Database.defaultDb == null) {
                 Database.defaultDb = this;
@@ -61,8 +63,9 @@ export class Database {
      * Create the database connection 
      */
     public connect(): Database {
-         // this.mongoose.connect(this.conf.dbURI, { useMongoClient: true });
-         this.mongoose.connect(this.conf.dbURI, { user: 'mean_crud_server', pass: '123456', useMongoClient: true });
+        // this.mongoose.connect(this.conf.dbURI, { useMongoClient: true });
+        console.log('connecting to ' + this.conf.dbURI);
+        this.mongoose.connect(this.conf.dbURI, { user: 'mean_crud_server', pass: '123456', useMongoClient: true });
         return this;
     }
 

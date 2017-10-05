@@ -2,17 +2,20 @@ FROM node:argon
 
 # Create app directory
 RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/mean_crud_server
 
 # Install app dependencies
-RUN git clone https://github.com/br11/mean_crud_server.git
+# RUN git clone https://github.com/br11/mean_crud_server.git
+COPY dist/ /usr/src/app/mean_crud_server/
+COPY node_modules/ /usr/src/app/mean_crud_server/node_modules/
+RUN ls
 WORKDIR /usr/src/app/mean_crud_server
-RUN npm install
-RUN npm run grunt
+#RUN npm install
+#RUN npm run grunt
 
 EXPOSE 8080
-ENTRYPOINT ["node", "dist/main.js"]
-CMD  ["8080", "mongo:27017"]
+ENTRYPOINT ["node", "main.js"]
+CMD  ["8080", "mongo:27017/local"]
 
 
 # docker build -t br11/mean_crud_server .
@@ -25,7 +28,7 @@ CMD  ["8080", "mongo:27017"]
 # docker run --name mean_server --link mongodb:mongo -p 8080:8080 br11/mean_crud_server 8080 mongo:27017
 # docker start mean_server
 
-# docker exec -it mongodb mongo admin
+# docker exec -it mongo mongo admin
 # > db.createUser({ user: 'marcio', pwd: '123456', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
 # > db.createUser({ user: 'mean_crud_server', pwd: '123456', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
 # docker run -it --rm --link mongodb:mongo mongo mongo -u marcio -p 123456 --authenticationDatabase admin mongodb/local

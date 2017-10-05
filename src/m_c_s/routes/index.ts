@@ -2,11 +2,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export module routes {
-    const testFolder = './src/app/routes';
+    const routesFolder = './m_c_s/routes';
     export function init() {
         Object.defineProperty(exports, "__esModule", { value: true });
-        fs.readdirSync(testFolder).forEach(file => {
-            if (fs.lstatSync('./src/app/routes/' + file).isDirectory()) {
+        fs.readdirSync(routesFolder).forEach(file => {
+            if (fs.lstatSync(routesFolder + '/' + file).isDirectory()) {
                 console.log(file);
                 let module = require('./' + file);
 

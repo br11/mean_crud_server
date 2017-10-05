@@ -1,7 +1,7 @@
-import { Database } from "./app";
-import { Server } from './app/server';
+import { Database } from "./m_c_s";
+import { Server } from './m_c_s/server';
 import * as fs from 'fs';
-import { AppConfig } from './app';
+import { AppConfig } from './m_c_s';
 
 export class Main {
 
@@ -30,7 +30,8 @@ export class Main {
             })
             .onError((err) => {
                 console.log('database error: ' + err);
-            });
+            })
+            .connect();
     }
 
     private static startServer() {

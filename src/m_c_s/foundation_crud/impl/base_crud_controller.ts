@@ -18,7 +18,7 @@ export class BaseCrudController<T> implements CrudController<T> {
     }
 
     private initroutes() {
-        this.router.get('/' + this.path+ '/lookup/:criteria', (request, response) => {
+        this.router.get('/' + this.path + '/lookup/:criteria', (request, response) => {
             console.log('Consultando tudo: ' + request.params.criteria);
 
             this.crudService.retrieveByCriteria(JSON.parse(request.params.criteria))
@@ -105,7 +105,10 @@ export class BaseCrudController<T> implements CrudController<T> {
             // on every content chunk, push it to the data array
             request.on('data', (chunk) => body.push(chunk));
             // we are done, resolve promise with those joined chunks
-            request.on('end', () => resolve(JSON.parse(body.join(''))));
+            request.on('end', () => {
+                console.log('data: ' + body.join(''));
+                resolve(JSON.parse(body.join('')));
+            });
         });
     }
 

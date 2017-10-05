@@ -11,7 +11,7 @@ export class BaseCrudDao<T> implements CrudDao<T> {
     create(entity: T): Promise<T> {
         return new Promise<T>((resolve, reject) => {
             console.log('vai criar');
-            const model = Database.getModel(this.modelName);
+            const model = Database.getModel(this.modelName);          
             model.create(entity, (err, persistentEntity) => {
                 console.log('criou ou nao');
                 if (err) {
@@ -25,16 +25,34 @@ export class BaseCrudDao<T> implements CrudDao<T> {
     }
 
     update(entity: T): Promise<T> {
-        return new Promise<T>(() => {
-            // TODO
-            return entity;
+        return new Promise<T>((resolve, reject) => {
+            console.log('vai atualizar');
+            const model = Database.getModel(this.modelName);        
+            model.update(entity, (err, persistentEntity) => {
+                console.log('atualizou ou nao');
+                if (err) {
+                    console.log(err);
+                    throw err;
+                }
+                console.log('atualizou sim');
+                resolve(persistentEntity);
+            });
         });
     }
 
     delete(entity: T): Promise<T> {
-        return new Promise<T>(() => {
-            // TODO
-            return entity;
+        return new Promise<T>((resolve, reject) => {
+            console.log('vai atualizar');
+            const model = Database.getModel(this.modelName);        
+            model.delete(entity, (err, persistentEntity) => {
+                console.log('atualizou ou nao');
+                if (err) {
+                    console.log(err);
+                    throw err;
+                }
+                console.log('atualizou sim');
+                resolve(persistentEntity);
+            });
         });
     }
 
