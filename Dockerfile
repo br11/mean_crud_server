@@ -1,21 +1,26 @@
 FROM node:argon
 
 # Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app/mean_crud_server
+RUN mkdir -p /usr/src/app/mean_crud_server
 
 # Install app dependencies
-# RUN git clone https://github.com/br11/mean_crud_server.git
-COPY dist/ /usr/src/app/mean_crud_server/
+COPY dist/ /usr/src/app/mean_crud_server/ 
 COPY node_modules/ /usr/src/app/mean_crud_server/node_modules/
-RUN ls
+
+# setting work directory
 WORKDIR /usr/src/app/mean_crud_server
-#RUN npm install
-#RUN npm run grunt
 
 EXPOSE 8080
 ENTRYPOINT ["node", "main.js"]
-CMD  ["8080", "mongo:27017/local"]
+CMD  ["8080", "mongo:27017/mean_crud"]
+
+
+#
+#
+#
+#
+#
+#
 
 
 # docker build -t br11/mean_crud_server .
