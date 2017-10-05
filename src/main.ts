@@ -14,7 +14,6 @@ export class Main {
         Main.startServer();
     }
 
-
     private static config() {
         const port = +process.argv[2]
         const dbURI = 'mongodb://' + process.argv[3]
@@ -31,8 +30,7 @@ export class Main {
             })
             .onError((err) => {
                 console.log('database error: ' + err);
-            })
-            .connect();
+            });
     }
 
     private static startServer() {
@@ -45,4 +43,6 @@ console.log(process.argv[2]);
 console.log(process.argv[3]);
 console.log('>>>');
 
-Main.bootstrap();
+console.log('waiting database startup...');
+setTimeout(() => { Main.bootstrap(); }, 5000);
+

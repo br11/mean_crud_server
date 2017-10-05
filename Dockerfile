@@ -12,14 +12,14 @@ RUN npm run grunt
 
 EXPOSE 8080
 ENTRYPOINT ["node", "dist/main.js"]
-CMD  ["8080", "localhost:27017"]
+CMD  ["8080", "mongo:27017"]
 
 
 # docker build -t br11/mean_crud_server .
 # docker logs ce2b063a5187
 # docker container ps
 
-# docker run --name mongodb -v \Users\marcio.luis.da.silva\data\db:/data/db -p 27017:27017 -d mongo:3.4.9
+# docker run --name mongodb -v ./data/db:/data/db -p 27017:27017 -d mongo:3.4.9
 # docker start mongodb
 
 # docker run --name mean_server --link mongodb:mongo -p 8080:8080 br11/mean_crud_server 8080 mongo:27017

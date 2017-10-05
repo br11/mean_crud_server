@@ -1,19 +1,37 @@
 version: '3'
+
 services:
   server:
+    image: mean_crud_server:0.0.1
     build: .
     ports:
     - "8080:8080"
     links:
     - mongo
-    volumes:
-    - \Users\marcio.luis.da.silva\data\db:/data/db
+    networks:
+      - backend
   mongo:
     image: mongo:3.4.9
     ports:
     - "27017:27017"
     volumes:
-    - .:/code
-    - data:/var/log
+    - /code:/code
+    - /data/db:/data/db
+    - /data/log:/var/log
+    networks:
+      - backend
+
 volumes:
   logvolume01: {}
+
+networks:
+  backend:
+    external:
+      name: backend
+
+#networks:
+#  backend:
+#    driver: overlay
+#    driver_opts:
+#      foo: "1"
+#      bar: "2"
