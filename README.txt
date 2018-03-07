@@ -6,132 +6,47 @@
 ###########################################################################
 ###########################################################################
 
-#########################
-## install & run
-#########################
-# Install
-npm install
-# Transpile
-npm run grunt
-# run 
-node dist/main.js
+Configuring database connection 
+# starts mongodb container to admin operations 
+$ sudo docker run --name mongodb -v ~/projects/mean_crud_server/data/db:/data/db -p 27017:27017 -d mongo:3.4.9
+or
+$ sudo docker start mongodb
 
-Ex.:
-curl -d \
-  '{"timestamp" : "2017-07-25T00:01:00", "user" : "vistoriador", "text" : "hello chat"}' \
-  -H "Content-Type: application/json" \
-  -X POST http://localhost:8080/api/audit_chat_message/1
+# Connects as admin to create application user
+$ sudo docker exec -it mongodb mongo admin
+  > db.createUser({ user: 'mean_crud_server', pwd: '123456', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
   
-curl -d \
-  '{"timestamp" : "2017-07-25T00:01:00", "user" : "vistoriador", "text" : "hello chat"}' \
-  -H "Content-Type: application/json" \
-  -X GET http://localhost:8080/api/audit_chat_message/5a9f8929853e1714a5473eb8
+# Tests the application user 
+$ sudo docker run -it --rm --link mongodb:mongo mongo:3.4.9 mongo -u mean_crud_server -p 123456 --authenticationDatabase admin mongodb/local
+  > db.getName();
+
+Stop mongodb container
+$ sudo docker container stop mongodb
+
+Running the application:
+$ sudo docker-compose up
 
 
-#########################
-## usage
-#########################
-POST: http://localhost:3002/api/audit_chat - saves a new document 
-PUT : http://localhost:3002/api/audit_chat - updates an existing document 
-DELETE: http://localhost:3002/api/audit_chat - deletes an existing document
-GET: http://localhost:3002/api/audit_chat - retrieves the whole collection
-GET: http://localhost:3002/api/audit_chat/:id – retrieves an existing document
-GET: http://localhost:3002/api/audit_chat/lookup/<json_criteria> - retrieves the documents matching the given criteria
-
-MongoDB Schema:
-{
-    name: String,
-    period: { start: Date, end: Date },
-    approval: { user: String, timestamp: Date, status: String }
-}
-
-Doc. exemplo:
-{
-    "_id" : ObjectId("5973aaa3d50805423c20d799"),
-    "name" : "auditoria na casa do ze",
-    "approval" : {
-        "user" : "supervisor",
-        "timestamp" : "2017-07-26T00:00:00",
-        "status" : "OK"
-    },
-    "period" : {
-        "start" : "2017-07-25T00:00:00",
-        "end" : "2017-07-25T00:10:00"
-    },
-    "__v" : 0
-}
-
-
-POST: http://localhost:3002/api/audit_chat_message - saves a new document 
-PUT : http://localhost:3002/api/audit_chat_message - updates an existing document 
-DELETE: http://localhost:3002/api/audit_chat_message - deletes an existing document
+Available routes:
+POST: http://localhost:3002/api/audit_chat_message/0 - saves a new document 
+PUT : http://localhost:3002/api/audit_chat_message/:id - updates an existing document 
+DELETE: http://localhost:3002/api/audit_chat_message/:id - deletes an existing document
 GET: http://localhost:3002/api/audit_chat_message - retrieves the whole collection
 GET: http://localhost:3002/api/audit_chat_message/:id - retrieves an existing document
 GET: http://localhost:3002/api/audit_chat_message/lookup/:json_criteria  - retrieves the documents matching the given criteria
 
-MongoDB Schema:
-{
-    chatId: Schema.Types.ObjectId,
-    user: String, timestamp: Date, text: String
-}
-
-Doc. exemplo:
-{
-    "timestamp" : "2017-07-25T00:01:00",
-    "user" : "vistoriador",
-    "text" : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-   "_id" : ObjectId("5973aaa3d50805423c20d79a")
-}
-
+Testing:
+# Inserting new document
+curl -d \
+  '{"timestamp" : "2017-07-25T00:01:00", "user" : "vistoriador", "text" : "hello chat"}' \
+  -H "Content-Type: application/json" \
+  -X POST http://localhost:8080/api/audit_chat_message/0
   
+# Recovering a document
+curl -d \
+  '{"timestamp" : "2017-07-25T00:01:00", "user" : "vistoriador", "text" : "hello chat"}' \
+  -H "Content-Type: application/json" \
+  -X GET http://localhost:8080/api/audit_chat_message/<_id>
 
 
-
-#########################
-## Impllementing new routes
-#########################
-
-# Add the new module in src/app/routes
-
-
-File: src\app\routes\user_profile\user_profile_model.ts
-
-import { tpa, api } from '../../../foundation';
-@tpa.Schema('user_profile', {
-    nome: String,
-    sobrenome: String,
-    email: String,
-    senha: String,
-    status: String
-})
-@api.Path('user_profile')
-export class UserProfileModel {
-    nome: string;
-    sobrenome: string;
-    email: string;
-    senha: string;
-    status: String
-}
-
-export function init() {
-    console.log('Initiating model for UserProfileModel');
-    new UserProfileModel();
-}
-------
-
-File: src\app\routes\user_profile\index.ts
-------
-export * from './user_profile_model';
-------
-
-> npm run grunt
-> node dist/main.js
-
-The following routes are now available:
-  POST: http://localhost:3002/api/user_profile - saves a new document 
-  PUT : http://localhost:3002/api/user_profile - updates an existing document 
-  DELETE: http://localhost:3002/api/user_profile - deletes an existing document
-  GET: http://localhost:3002/api/user_profile - retrieves the whole collection
-  GET: http://localhost:3002/api/user_profile/:id - retrieves an existing document
-  GET: http://localhost:3002/api/user_profile/lookup/:json_criteria  - retrieves the documents matching the given criteria
 
