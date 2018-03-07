@@ -2,7 +2,7 @@ version: '3'
 
 services:
   server:
-    image: mean_crud_server:0.0.1
+    image: br11/mean_crud_server:0.0.1
     build: .
     ports:
     - "8080:8080"
@@ -16,8 +16,8 @@ services:
     - "27017:27017"
     volumes:
     - /code:/code
-    - /data/db:/data/db
-    - /data/log:/var/log
+    - ~/projects/mean_crud_server/data/db:/data/db
+    - ~/projects/mean_crud_server/data/log:/var/log
     networks:
       - backend
 

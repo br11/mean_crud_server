@@ -1,11 +1,3 @@
-###########################################################################
-###########################################################################
-## mean_crud_server
-## MEAN project - server-side CRUD auto generated
-## By: br11 - Marcio Luis da Silva
-###########################################################################
-###########################################################################
-
 #########################
 ## install & run
 #########################
@@ -15,17 +7,6 @@ npm install
 npm run grunt
 # run 
 node dist/main.js
-
-Ex.:
-curl -d \
-  '{"timestamp" : "2017-07-25T00:01:00", "user" : "vistoriador", "text" : "hello chat"}' \
-  -H "Content-Type: application/json" \
-  -X POST http://localhost:8080/api/audit_chat_message/1
-  
-curl -d \
-  '{"timestamp" : "2017-07-25T00:01:00", "user" : "vistoriador", "text" : "hello chat"}' \
-  -H "Content-Type: application/json" \
-  -X GET http://localhost:8080/api/audit_chat_message/5a9f8929853e1714a5473eb8
 
 
 #########################
