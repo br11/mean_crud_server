@@ -27,14 +27,14 @@ CMD  ["8080", "mongo:27017/mean_crud"]
 # docker logs ce2b063a5187
 # docker container ps
 
-# docker run --name mongodb -v ./data/db:/data/db -p 27017:27017 -d mongo:3.4.9
+# docker run --name mongodb -v ~/data/db:/data/db -p 27017:27017 -d mongo:3.4.9
 # docker start mongodb
 
 # docker run --name mean_server --link mongodb:mongo -p 8080:8080 br11/mean_crud_server 8080 mongo:27017
 # docker start mean_server
 
-# docker exec -it mongo mongo admin
+# docker exec -it mongodb mongo admin
 # > db.createUser({ user: 'marcio', pwd: '123456', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
 # > db.createUser({ user: 'mean_crud_server', pwd: '123456', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
-# docker run -it --rm --link mongodb:mongo mongo mongo -u marcio -p 123456 --authenticationDatabase admin mongodb/local
+# docker run -it --rm --link mongodb:mongo mongo:3.4.9 mongo -u marcio -p 123456 --authenticationDatabase admin mongodb/local
 # > db.getName();
