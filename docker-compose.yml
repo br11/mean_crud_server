@@ -10,6 +10,15 @@ services:
     - mongo
     networks:
       - backend
+    deploy:
+      mode: replicated
+      replicas: 2
+    restart_policy:
+      condition: on-failure
+      delay: 5s
+      max_attempts: 3
+      window: 120s
+
   mongo:
     image: mongo:3.4.9
     ports:
@@ -22,12 +31,19 @@ services:
       - backend
 
 volumes:
-  logvolume01: {}
+  /code:
+  ~/projects/mean_crud_server/data/db:
+  ~/projects/mean_crud_server/data/log:
 
 networks:
   backend:
-    external:
-      name: backend
+    driver: overlay
+    driver_opts:
+
+#networks:
+#  backend:
+#    external:
+#      name: backend
 
 #networks:
 #  backend:
