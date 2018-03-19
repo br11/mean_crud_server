@@ -2,17 +2,16 @@ version: '3'
 
 services:
   server:
-    image: br11/mean_crud_server:0.0.1
-    build: .
+    image: br11/mean_crud_server:latest
     ports:
     - "8080:8080"
     links:
-    - mongo
+      - mongo
     networks:
       - backend
     deploy:
       mode: replicated
-      replicas: 2
+      replicas: 5
     restart_policy:
       condition: on-failure
       delay: 5s
@@ -24,16 +23,19 @@ services:
     ports:
     - "27017:27017"
     volumes:
-    - /code:/code
-    - ~/projects/mean_crud_server/data/db:/data/db
-    - ~/projects/mean_crud_server/data/log:/var/log
+    - data:/data/db
+    - logs:/var/log
     networks:
       - backend
+    restart_policy:
+      condition: on-failure
+      delay: 5s
+      max_attempts: 3
+      window: 120s
 
 volumes:
-  /code:
-  ~/projects/mean_crud_server/data/db:
-  ~/projects/mean_crud_server/data/log:
+  data:
+  logs:
 
 networks:
   backend:
