@@ -13,11 +13,15 @@ sudo docker build -t br11/mean_crud_server:0.0.2 .
 # Running stack 
 sudo docker stack deploy -c docker-compose.yml mean
 
-Configuring database connection 
 # Connects as admin to create application user in mean database
+$ sudo docker container ps
 $ sudo docker exec -it <mongo_container_name> mongo admin
   > use mean
   > db.createUser({ user: 'mean_crud_server', pwd: '123456', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
+
+# redeploy stack and check if db connection succeeded
+$ sudo docker container ps
+$ sudo docker container logs <server_app_container_id>
 
 Available routes:
 POST: http://localhost:3002/api/audit_chat_message/0 - saves a new document 
