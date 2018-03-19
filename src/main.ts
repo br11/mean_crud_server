@@ -21,6 +21,8 @@ export class Main {
         Main.appConf = { port: port, dbURI: dbURI };
         // Main.appConf = { port: 3002, dbURI: 'mongodb://iot_chat:iot_chat@ds151820.mlab.com:51820/iot_chat' };
 
+        console.log("configuracao - " + Main.appConf);
+
         this.db = new Database(Main.appConf)
             .onConnected(() => {
                 console.log('database connected');

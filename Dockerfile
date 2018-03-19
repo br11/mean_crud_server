@@ -12,5 +12,5 @@ WORKDIR /usr/src/app/mean_crud_server
 
 EXPOSE 8080
 ENTRYPOINT ["node", "main.js"]
-CMD  ["8080", "mongo:27017"]
+CMD  ["8080", "mongo:27017/mean"]
 
