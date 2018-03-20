@@ -2,7 +2,7 @@ version: '3'
 
 services:
   reverse_proxy:
-    image: br11/reverse_proxy:0.0.2
+    image: br11/reverse_proxy:0.0.3
     ports:
       - "80:80"
     networks:
@@ -17,15 +17,15 @@ services:
     image: br11/mean_crud_server:0.0.2
     ports:
       - "8080:8080"
-    networks:
+    networks: 
       - backend
     deploy:
       mode: replicated
       replicas: 1
     depends_on:
-      - db
+      - database
 
-  db:
+  database:
     image: mongo:3.4.9
     ports:
       - "27017:27017"
