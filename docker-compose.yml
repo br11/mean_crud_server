@@ -1,7 +1,21 @@
 version: '3'
 
 services:
-  server:
+
+docker pull nginx
+  reverse_proxy:
+    image: nginx:1.13.9-alpine
+    ports:
+      - "80:80"
+    networks:
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - backend_app
+
+  backend_app:
     image: br11/mean_crud_server:0.0.2
     ports:
       - "8080:8080"
@@ -11,10 +25,9 @@ services:
       mode: replicated
       replicas: 1
     depends_on:
-      - mongo
+      - db
 
-  
-  mongo:
+  db:
     image: mongo:3.4.9
     ports:
       - "27017:27017"
