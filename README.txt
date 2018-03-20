@@ -5,27 +5,23 @@
 ## By: br11 - Marcio Luis da Silva
 ###########################################################################
 ###########################################################################
+# Build server app imagge
+sudo docker build -t br11/mean_crud_server:0.0.2 .
 
-Configuring database connection 
-# starts mongodb container to admin operations 
-$ sudo docker run --name mongodb -v ~/projects/mean_crud_server/data/db:/data/db -p 27017:27017 -d mongo:3.4.9
-or
-$ sudo docker start mongodb
+# Edit docker-compose.yml to poit to the appropriate image tag
 
-# Connects as admin to create application user
-$ sudo docker exec -it mongodb mongo admin
+# Running stack 
+sudo docker stack deploy -c docker-compose.yml mean
+
+# Connects as admin to create application user in mean database
+$ sudo docker container ps
+$ sudo docker exec -it <mongo_container_name> mongo admin
+  > use mean
   > db.createUser({ user: 'mean_crud_server', pwd: '123456', roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] });
-  
-# Tests the application user 
-$ sudo docker run -it --rm --link mongodb:mongo mongo:3.4.9 mongo -u mean_crud_server -p 123456 --authenticationDatabase admin mongodb/local
-  > db.getName();
 
-Stop mongodb container
-$ sudo docker container stop mongodb
-
-Running the application:
-$ sudo docker-compose up
-
+# redeploy stack and check if db connection succeeded
+$ sudo docker container ps
+$ sudo docker container logs <server_app_container_id>
 
 Available routes:
 POST: http://localhost:3002/api/audit_chat_message/0 - saves a new document 
@@ -47,6 +43,4 @@ curl -d \
   '{"timestamp" : "2017-07-25T00:01:00", "user" : "vistoriador", "text" : "hello chat"}' \
   -H "Content-Type: application/json" \
   -X GET http://localhost:8080/api/audit_chat_message/<_id>
-
-
 
