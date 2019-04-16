@@ -5,7 +5,12 @@
 ## By: br11 - Marcio Luis da Silva
 ###########################################################################
 ###########################################################################
-# Build server app imagge
+# build and test
+npm install
+npm run grunt
+node dist/main.js
+
+# Build server app image
 sudo docker build -t br11/mean_crud_server:0.0.2 .
 
 # Edit docker-compose.yml to poit to the appropriate image tag
